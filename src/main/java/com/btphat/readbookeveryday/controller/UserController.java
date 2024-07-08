@@ -3,7 +3,7 @@ package com.btphat.readbookeveryday.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,19 +26,19 @@ public class UserController {
     }
 
     @RequestMapping(value = "/save", method = RequestMethod.POST)
-    public User save(@ModelAttribute UserDto userDto) {
+    public User save(@RequestBody UserDto userDto) {
 
         return userService.saveUser(userDto);
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public User update(@ModelAttribute UserDto userDto) {
+    public User update(@RequestBody UserDto userDto) {
 
         return userService.saveUser(userDto);
     }
 
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public String delete(@ModelAttribute UserDto userDto) {
+    public String delete(@RequestBody UserDto userDto) {
 
         userService.deleteUser(userDto);
 
@@ -46,13 +46,13 @@ public class UserController {
     }
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public User search(@ModelAttribute UserDto userDto) {
+    public User search(@RequestBody UserDto userDto) {
 
         return userService.findUserByUsername(userDto);
     }
 
     @RequestMapping(value = "/disable", method = RequestMethod.DELETE)
-    public User disable(@ModelAttribute UserDto userDto) {
+    public User disable(@RequestBody UserDto userDto) {
 
         return userService.disableUser(userDto);
     }

@@ -2,29 +2,32 @@ package com.btphat.readbookeveryday.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
+import aj.org.objectweb.asm.commons.Method;
+
 @Configuration
 public class SecurityConfig {
-    
+
     @Bean
-    public UserDetailsService userDetailsService() {
+    UserDetailsService userDetailsService() {
 
         return new UserDetailsServiceImpl();
     }
 
     @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
+    BCryptPasswordEncoder passwordEncoder() {
 
         return new BCryptPasswordEncoder();
     }
 
     @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
+    DaoAuthenticationProvider daoAuthenticationProvider() {
 
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService());
@@ -36,8 +39,11 @@ public class SecurityConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http.authorizeHttpRequests( auth -> auth.anyRequest().permitAll())
+        http.authorizeHttpRequests( auth -> 
+        		auth.requestMatchers(HttpMethod.POST, "/user/save").permitAll()
+        		.anyRequest().permitAll())
             .cors(cors -> cors.disable())
+            .csrf(csrf -> csrf.disable())
             .formLogin(login -> login.defaultSuccessUrl("/home"))
             .logout(logout -> logout.permitAll());
 
